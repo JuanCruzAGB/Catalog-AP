@@ -1,0 +1,79 @@
+@import "./background-color.scss";
+@import "./button.scss";
+@import "./color.scss";
+@import "./font.scss";
+@import "./skeleton.scss";
+
+:root {
+  --height: 6rem;
+  --padding-inline: 1rem;
+}
+
+body {
+  font-family: var(--work-sans, sans-serif);
+}
+
+::selection {
+  background-color: var(--maroon, maroon);
+  color: var(--light, #FFFFFF);
+}
+
+.list {
+  &.cards {
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    &::-webkit-scrollbar-button {
+      width: 15%;
+      height: 15%;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--maroon, maroon);
+      border-radius: 100vh;
+    }
+
+    &::-webkit-scrollbar-thumb:hover,
+    &::-webkit-scrollbar-thumb:active {
+      background: var(--red, red);
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--grey, grey);
+      border-radius: 100vh;
+    }
+
+    &::-webkit-scrollbar-track:hover,
+    &::-webkit-scrollbar-track:active {
+      background: var(--lightgrey, lightgrey);
+    }
+
+    &::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+  }
+}
+
+@media(min-width: 768px) {
+  /*  */
+}
+
+@media(min-width: 1024px) {
+  :root {
+    --padding-inline: 5rem;
+  }
+}
+
+@media(min-width: 1200px) {
+  /*  */
+}
+
+@media (min-width: 1536px) {
+  /*  */
+}
+
+@media (min-width: 1920px) {
+  /*  */
+}
