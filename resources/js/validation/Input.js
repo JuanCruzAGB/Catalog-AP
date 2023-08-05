@@ -8,6 +8,7 @@ import Min from "./requirements/Min.js";
 import Nullable from "./requirements/Nullable.js";
 import Number from "./requirements/Number.js";
 import Phone from "./requirements/Phone.js";
+import RegEx from "./requirements/RegEx.js";
 import Required from "./requirements/Required.js";
 
 /**
@@ -17,12 +18,14 @@ import Required from "./requirements/Required.js";
  * @return {Requirement}
  */
 function createRequirement (requirement, input) {
-  let name = requirement.split(':')[0];
+  let name = requirement.split(':')[0]
+    .toLowerCase();
 
   let aux = requirement.split(':')[1] ?? '';
 
-  if (aux)
+  if (aux) {
     aux = aux.split(',');
+  }
 
   let params = {
     // 
@@ -41,11 +44,12 @@ function createRequirement (requirement, input) {
         ...Length.params,
       };
 
-      if (aux)
+      if (aux) {
         Object.keys(params)
           .map((name, key) => {
             params[name] = aux[key];
           });
+      }
 
       return new Length({
         lang: input.lang,
@@ -58,11 +62,12 @@ function createRequirement (requirement, input) {
         ...Mail.params,
       };
 
-      if (aux)
+      if (aux) {
         Object.keys(params)
           .map((name, key) => {
             params[name] = aux[key];
           });
+      }
 
       return new Mail({
         lang: input.lang,
@@ -75,11 +80,12 @@ function createRequirement (requirement, input) {
         ...Max.params,
       };
 
-      if (aux)
+      if (aux) {
         Object.keys(params)
           .map((name, key) => {
             params[name] = aux[key];
           });
+      }
 
       return new Max({
         lang: input.lang,
@@ -92,11 +98,12 @@ function createRequirement (requirement, input) {
         ...Min.params,
       };
 
-      if (aux)
+      if (aux) {
         Object.keys(params)
           .map((name, key) => {
             params[name] = aux[key];
           });
+      }
 
       return new Min({
         lang: input.lang,
@@ -112,11 +119,12 @@ function createRequirement (requirement, input) {
         ...Number.params,
       };
 
-      if (aux)
+      if (aux) {
         Object.keys(params)
           .map((name, key) => {
             params[name] = aux[key];
           });
+      }
 
       return new Number({
         lang: input.lang,
@@ -129,13 +137,33 @@ function createRequirement (requirement, input) {
         ...Phone.params,
       };
 
-      if (aux)
+      if (aux) {
         Object.keys(params)
           .map((name, key) => {
             params[name] = aux[key];
           });
+      }
 
       return new Phone({
+        lang: input.lang,
+        message: input.messages[name] ?? null,
+        params,
+      });
+
+    case 'regex':
+    case 'regexp':
+      params = {
+        ...RegEx.params,
+      };
+
+      if (aux) {
+        Object.keys(params)
+          .map((name, key) => {
+            params[name] = aux[key];
+          });
+      }
+
+      return new RegEx({
         lang: input.lang,
         message: input.messages[name] ?? null,
         params,
@@ -149,6 +177,7 @@ function createRequirement (requirement, input) {
 
     default:
       console.warn(`The Requirement "${ name }" does not exists yet`);
+
       break;
   }
 }
@@ -174,7 +203,10 @@ export default class Input {
   constructor (data = {
     // 
   }) {
-    let props = { ...Input.props, ...data };
+    let props = {
+      ...Input.props,
+      ...data,
+    };
 
     for (const key in props) {
       if (Object.hasOwnProperty.call(props, key)) {
@@ -184,8 +216,9 @@ export default class Input {
       }
     }
 
-    if (this.model)
+    if (this.model) {
       this.validate();
+    }
   }
 
   /**
@@ -193,8 +226,14 @@ export default class Input {
    * @memberof Input
    */
   set requirements (string) {
-    if (string)
-      this._requirements = string.split('|')
+    if (string) {
+      if (!this._requirements) {
+        this._requirements = {
+          // 
+        };
+      }
+
+      string.split('|')
         .map(requirement => {
           if (!this.model && requirement == Nullable.name) {
             this.error = null;
@@ -202,8 +241,12 @@ export default class Input {
             this.invalid = false;
           }
 
-          return createRequirement(requirement, this);
+          let name = requirement.split(':')[0]
+            .toLowerCase();
+
+          this._requirements[name] = createRequirement(requirement, this);
         });
+    }
   }
 
   /**
@@ -215,10 +258,11 @@ export default class Input {
 
     this.invalid = false;
 
-    this._requirements
+    Object.values(this._requirements)
       .map(requirement => {
-        if (!this.invalid)
+        if (!this.invalid) {
           requirement.validate(this);
+        }
       });
   }
 

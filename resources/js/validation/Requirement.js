@@ -19,7 +19,10 @@ export default class Requirement {
   constructor (data = {
     // 
   }) {
-    let props = { ...Requirement.props, ...data };
+    let props = {
+      ...Requirement.props,
+      ...data,
+    };
 
     for (const key in props) {
       if (Object.hasOwnProperty.call(props, key)) {
@@ -38,11 +41,13 @@ export default class Requirement {
    */
   get message () {
     if (this.messages) {
-      if (this.messages.custom)
+      if (this.messages.custom) {
         return this.messages.custom;
+      }
 
-      if (this.messages.default)
+      if (this.messages.default) {
         return this.messages.default[this.lang];
+      }
     }
 
     return null;

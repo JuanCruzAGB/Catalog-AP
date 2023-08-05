@@ -156,8 +156,8 @@
         return '';
       },
       required () {
-        return this.input._requirements
-          .some(requirement => requirement.name == 'required');
+        return Object.keys(this.input._requirements)
+          .includes('required');
       },
       valid () {
         return !this.input.invalid;

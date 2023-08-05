@@ -41,6 +41,16 @@ export default class Number extends Requirement {
    * @memberof Number
    */
   get regexp () {
+    if (typeof this.params.regexp == 'string') {
+      if (this.params.regexp.match(/^\//)) {
+        let regexp = this.params.regexp.slice(1);
+
+        regexp = regexp.slice(0, -1);
+
+        return new RegExp(regexp);
+      }
+    }
+
     return this.params.regexp;
   }
 
@@ -50,15 +60,17 @@ export default class Number extends Requirement {
    * @memberof Number
    */
   validate (input) {
-    if (input.required)
+    if (input.required) {
       if (typeof input.model != 'number') {
         if (typeof input.model == 'string') {
-          if (input.model.match(this.regexp))
+          if (input.model.match(this.regexp)) {
             return;
+          }
         }
 
         this.invalidate(input);
       }
+    }
   }
 
   /**

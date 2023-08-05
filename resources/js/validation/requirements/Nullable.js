@@ -25,10 +25,9 @@ export default class Nullable extends Requirement {
    * @memberof Nullable
    */
   validate (input) {
-    if (!input.model)
+    if (!input.model) {
       input.required = false;
-
-    else {
+    } else {
       input.error = null;
 
       input.invalid = false;

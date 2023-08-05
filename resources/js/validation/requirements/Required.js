@@ -36,8 +36,9 @@ export default class Required extends Requirement {
   validate (input) {
     input.required = true;
 
-    if (!input.model)
+    if (!input.model) {
       this.invalidate(input);
+    }
   }
 
   /**

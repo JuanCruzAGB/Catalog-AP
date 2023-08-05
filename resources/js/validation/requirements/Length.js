@@ -53,8 +53,9 @@ export default class Length extends Requirement {
   get message () {
     let regex = /:length/
 
-    if (this.messages.custom)
+    if (this.messages.custom) {
       return this.messages.custom.replace(regex, this.length);
+    }
 
     return this.messages.default.replace(regex, this.length);
   }
@@ -65,20 +66,24 @@ export default class Length extends Requirement {
    * @memberof Length
    */
   validate (input) {
-    if (input.required)
+    if (input.required) {
       switch (typeof input.model) {
         case 'number':
           this.validateNumber(input);
+
           break;
 
         case 'object':
           this.validateObject(input);
+
           break;
 
         case 'string':
           this.validateString(input);
+
           break;
       }
+    }
   }
 
   /**
@@ -87,8 +92,9 @@ export default class Length extends Requirement {
    * @memberof Length
    */
   validateNumber (input) {
-    if (input.model < this.length || input.model > this.length)
+    if (input.model < this.length || input.model > this.length) {
       this.invalidate(input);
+    }
   }
 
   /**
@@ -97,9 +103,11 @@ export default class Length extends Requirement {
    * @memberof Length
    */
   validateObject (input) {
-    if (Array.isArray(input.model))
-      if (input.model.length < this.length || input.model.length > this.length)
+    if (Array.isArray(input.model)) {
+      if (input.model.length < this.length || input.model.length > this.length) {
         this.invalidate(input);
+      }
+    }
   }
 
   /**
@@ -108,8 +116,9 @@ export default class Length extends Requirement {
    * @memberof Length
    */
   validateString (input) {
-    if (input.model.length < this.length || input.model.length > this.length)
+    if (input.model.length < this.length || input.model.length > this.length) {
       this.invalidate(input);
+    }
   }
 
   /**

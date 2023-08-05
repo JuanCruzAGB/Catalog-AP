@@ -41,6 +41,16 @@ export default class Mail extends Requirement {
    * @memberof Mail
    */
   get regexp () {
+    if (typeof this.params.regexp == 'string') {
+      if (this.params.regexp.match(/^\//)) {
+        let regexp = this.params.regexp.slice(1);
+
+        regexp = regexp.slice(0, -1);
+
+        return new RegExp(regexp);
+      }
+    }
+
     return this.params.regexp;
   }
 
@@ -54,8 +64,9 @@ export default class Mail extends Requirement {
 
     if (input.required) {
       if (typeof input.model == 'string') {
-        if (input.model.match(regex))
+        if (input.model.match(regex)) {
           return;
+        }
       }
 
       this.invalidate(input);

@@ -2,20 +2,20 @@ import config from "../conf.json";
 import Requirement from "../Requirement.js";
 
 /**
- * * Controls the Phone requirement.
+ * * Controls the RegEx requirement.
  * @export
- * @class Phone
+ * @class RegEx
  * @extends {Requirement}
  */
-export default class Phone extends Requirement {
+export default class RegEx extends Requirement {
   /**
-   * * Creates an instance of Phone.
+   * * Creates an instance of RegEx.
    * @param {object|null} [data]
    * @param {string} [data.lang='es']
    * @param {string|null} [data.message=null]
    * @param {object} [data.params={}]
-   * @param {RegExp} [data.params.regexp=/^0|15/]
-   * @memberof Phone
+   * @param {RegEx} [data.params.regexp=/^0|15/]
+   * @memberof RegEx
    */
   constructor (data = {
     // 
@@ -23,12 +23,12 @@ export default class Phone extends Requirement {
     super({
       lang: data.lang ?? config.lang,
       messages: {
-        ...Phone.messages,
+        ...RegEx.messages,
         custom: data.message ?? null,
       },
-      name: Phone.name,
+      name: RegEx.name,
       params: {
-        ...Phone.params,
+        ...RegEx.params,
         ...data.params,
       },
     });
@@ -37,8 +37,8 @@ export default class Phone extends Requirement {
   /**
    * * Returns the regexp.
    * @readonly
-   * @return {RegExp}
-   * @memberof Phone
+   * @return {RegEx}
+   * @memberof RegEx
    */
   get regexp () {
     if (typeof this.params.regexp == 'string') {
@@ -57,12 +57,12 @@ export default class Phone extends Requirement {
   /**
    * * Validate an Input.
    * @param {Input} input
-   * @memberof Phone
+   * @memberof RegEx
    */
   validate (input) {
     if (input.required) {
       if (typeof input.model == 'string') {
-        if (!input.model.match(this.regexp)) {
+        if (input.model.match(this.regexp)) {
           return;
         }
       }
@@ -75,13 +75,13 @@ export default class Phone extends Requirement {
    * * Returns the Requirement messages.
    * @readonly
    * @static
-   * @memberof Phone
+   * @memberof RegEx
    */
   static get messages () {
     return {
       default: {
-        en: 'The field should not start with 0 or 15',
-        es: 'El campo no debe empezar ni con 0, ni con 15',
+        en: 'The field should is not valid',
+        es: 'El campo no es válido',
       },
     };
   }
@@ -90,21 +90,21 @@ export default class Phone extends Requirement {
    * * Returns the Requirement name.
    * @readonly
    * @static
-   * @memberof Phone
+   * @memberof RegEx
    */
   static get name () {
-    return "phone";
+    return "regexp";
   }
 
   /**
    * * Returns the Requirement parameters.
    * @readonly
    * @static
-   * @memberof Phone
+   * @memberof RegEx
    */
   static get params () {
     return {
-      regexp: /^0|15/,
+      regexp: null,
     };
   }
 };

@@ -36,11 +36,10 @@ export default class Exists extends Requirement {
    * @memberof Exists
    */
   validate (input) {
-    console.log(this);
-
     if (input.required) {
-      if (input.options && input.options.lenght && !input.options.includes(input.model))
+      if (input.options && input.options.lenght && !input.options.includes(input.model)) {
         this.invalidate(input);
+      }
     }
   }
 
