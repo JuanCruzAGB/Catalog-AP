@@ -64,6 +64,10 @@
     &:hover {
       text-decoration: none;
     }
+    @media (min-width: 1024px) {
+      position: sticky;
+      top: calc(var(--height, 4.6rem) + 32px);
+    }
 
     .title {
       padding-bottom: .5rem;
@@ -76,6 +80,18 @@
     .list {
       display: grid;
       gap: 1rem;
+
+      .item {
+        color: var(--black, black);
+
+        a {
+          color: var(--black, black);
+
+          .icon {
+            color: var(--maroon, maroon);
+          }
+        }
+      }
     }
 
     &::v-deep {

@@ -11,7 +11,11 @@
             empty: loading,
           }">
           <template v-if="!loading">
-            Consulta acerca de 
+            <span class="maroon">
+              Preguntar por
+            </span>
+
+            <br />
 
             {{ property.name }}
           </template>
@@ -146,6 +150,10 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0;
       margin-top: -2rem;
+
+      header {
+        padding-inline: 0 2rem;
+      }
     }
 
     .form {
@@ -177,6 +185,7 @@
       background-size: cover;
       background-attachment: fixed;
       @media (min-width: 1024px) {
+        position: relative;
         padding: 2rem;
         padding-inline: 2rem var(--padding-inline, 1rem);
       }
