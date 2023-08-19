@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import { mapGetters, } from "vuex";
+  import { mapActions, mapGetters, } from "vuex";
 
   import Footer from "../Footer.vue";
   import Header from "../Header.vue";
@@ -44,6 +44,12 @@
         return [ 'development', 'local' ].includes(this.env);
       },
     },
+    methods: {
+      ...mapActions([ 'getContact', ]),
+    },
+    beforeMount () {
+      this.getContact();
+    },
   }
 </script>
 
@@ -59,7 +65,7 @@
     }
 
     .view {
-      background-color: var(--white, #FFFFFF);
+      background-color: var(--white, white);
     }
   }
 </style>

@@ -2,7 +2,7 @@
   <footer>
     <span class="copyright">
       <p>
-        <a href="mailto:jmarmentia2010@hotmail.com">© Armentia Propiedades</a>
+        <a :href="`mailto:${ contact.email }`">© Armentia Propiedades</a>
 
         <br>
 
@@ -10,15 +10,20 @@
 
         <br>
 
-        Desarrollado por <a href="mailto:juan.cruz.armentia@gmail.com">Juan Cruz Armentia</a>
+        Desarrollado por <a :href="`mailto:${ contact.developer }`">Juan Cruz Armentia</a>
       </p>
     </span>
   </footer>
 </template>
 
 <script>
+  import { mapGetters, } from "vuex";
+
   export default {
     name: 'Footer',
+    computed: {
+      ...mapGetters([ 'contact', ]),
+    },
   }
 </script>
 

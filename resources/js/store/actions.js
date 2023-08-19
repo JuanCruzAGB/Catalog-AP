@@ -42,7 +42,7 @@ export default {
     return new Promise((resolve, reject) => {
       APIService.getContact()
         .then(response => {
-          commit('setContact', response.data.contact);
+          commit('setContact', response.data);
 
           resolve(response);
         })
@@ -169,5 +169,11 @@ export default {
     router.push({
       query,
     });
+  },
+  /**
+   * * Unauthenticate the User.
+   */
+  unauthenticate ({ commit, }) {
+    commit('setAuth', false);
   },
 };

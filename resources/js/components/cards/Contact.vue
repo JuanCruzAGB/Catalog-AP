@@ -37,7 +37,7 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters, } from "vuex";
+  import { mapGetters, } from "vuex";
 
   import Card from "../Card.vue";
 
@@ -48,12 +48,6 @@
     },
     computed: {
       ...mapGetters([ 'contact', ]),
-    },
-    methods: {
-      ...mapActions([ 'getContact', ]),
-    },
-    async beforeMount () {
-      await this.getContact();
     },
   }
 </script>

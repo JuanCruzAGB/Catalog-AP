@@ -35,10 +35,9 @@ function getFiltersURL (filters) {
 export default {
   /**
    * * Get the Contact.
-   * @param {object} filters
    * @returns {Promise}
    */
-  getContact (filters) {
+  getContact () {
     return axios
       .get(`${ api_url }/contact`, {
         headers: {

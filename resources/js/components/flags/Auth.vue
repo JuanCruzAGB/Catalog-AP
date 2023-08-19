@@ -4,6 +4,7 @@
       'not-auth': !auth,
     }">
     <template v-if="auth">
+      <button @click="logout">
         <span v-if="isMobile">
           Auth
         </span>
