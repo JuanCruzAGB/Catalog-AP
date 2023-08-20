@@ -86,31 +86,37 @@
     data () {
       return {
         inputs: {
-          email: new this._provided.objects.input({
-            requirements: 'required|mail',
-          }),
-          id_property: new this._provided.objects.input({
-            requirements: 'nullable',
-          }),
-          name: new this._provided.objects.input({
-            requirements: 'nullable',
-          }),
-          message: new this._provided.objects.input({
-            requirements: 'nullable',
-          }),
-          phone: new this._provided.objects.input({
-            requirements: 'required|phone|length:10',
-          }),
+          email: new this._provided.objects
+            .input({
+              requirements: 'required|mail',
+            }),
+          id_property: new this._provided.objects
+            .input({
+              requirements: 'nullable',
+            }),
+          name: new this._provided.objects
+            .input({
+              requirements: 'nullable',
+            }),
+          message: new this._provided.objects
+            .input({
+              requirements: 'nullable',
+            }),
+          phone: new this._provided.objects
+            .input({
+              requirements: 'required|phone|length:10',
+            }),
         },
       };
     },
     computed: {
       ...mapGetters([ 'loading', ]),
       formData () {
-        let formData = [];
+        let formData = [
+          // 
+        ];
 
-        Object
-          .values(this.inputs)
+        Object.values(this.inputs)
           .map(input => {
             formData.push(input.model);
           });
@@ -118,8 +124,7 @@
         return formData;
       },
       valid () {
-        return !Object
-          .values(this.inputs)
+        return !Object.values(this.inputs)
           .some(input => input.invalid);
       },
     },

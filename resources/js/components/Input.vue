@@ -1,6 +1,7 @@
 <template>
   <label class="form-group"
     :class="{
+      focus,
       invalid: input.error,
     }">
     <div v-if="showLabel || label">
@@ -12,56 +13,69 @@
       </span>
     </div>
 
-    <template v-if="component">
-      <component class="input"
-        :clearable="clearable"
-        :closeOnSelect="closeOnSelect"
-        :deselectFromDropdown="multiple"
-        :disabled="disabled"
-        :is="component"
-        :multiple="multiple"
-        :options="options"
-        :placeholder="placeholder"
-        :readonly="readonly"
-        :searchable="searchable"
-        :taggable="create"
-        v-model="input.model"
-        @blur="onBlur"
-        @change="onChange"
-        @close="onClose"
-        @focus="onFocus"
-        @input="onInput"
-        @open="onOpen"
-        @search:blur="onBlur"
-        @search:focus="onFocus" />
-    </template>
-
-    <template v-else>
-      <template v-if="type == 'textarea'">
-        <textarea class="input"
+    <div class="form-input">
+      <template v-if="component">
+        <component class="input"
+          :clearable="clearable"
+          :closeOnSelect="closeOnSelect"
+          :deselectFromDropdown="multiple"
           :disabled="disabled"
+          :is="component"
+          :multiple="multiple"
+          :options="options"
           :placeholder="placeholder"
           :readonly="readonly"
+          :searchable="searchable"
+          :taggable="create"
           v-model="input.model"
           @blur="onBlur"
+          @change="onChange"
+          @close="onClose"
           @focus="onFocus"
-          @input="onInput"></textarea>
+          @input="onInput"
+          @open="onOpen"
+          @search:blur="onBlur"
+          @search:focus="onFocus" />
       </template>
 
       <template v-else>
-        <input class="input"
-          :disabled="disabled"
-          :placeholder="placeholder"
-          :readonly="readonly"
-          :type="type"
-          v-model="input.model"
-          @blur="onBlur"
-          @focus="onFocus"
-          @input="onInput" />
-      </template>
-    </template>
+        <template v-if="type == 'textarea'">
+          <textarea class="input"
+            :disabled="disabled"
+            :placeholder="placeholder"
+            :readonly="readonly"
+            v-model="input.model"
+            @blur="onBlur"
+            @focus="onFocus"
+            @input="onInput"></textarea>
+        </template>
 
-    <div v-if="input.error"
+        <template v-else>
+          <input class="input"
+            :disabled="disabled"
+            :placeholder="placeholder"
+            :readonly="readonly"
+            :type="symbolicType"
+            v-model="input.model"
+            @blur="onBlur"
+            @focus="onFocus"
+            @input="onInput" />
+
+          <template v-if="type == 'password'">
+            <button class="btn btn-icon btn-maroon"
+              @click.prevent="changeType">
+              <i v-if="symbolicType == 'password'"
+                class="fa-solid fa-eye"></i>
+
+              <i v-else
+                class="fa-solid fa-eye-slash"></i>
+            </button>
+          </template>
+        </template>
+      </template>
+    </div>
+
+    <div v-if="input.error && typeof input.error == 'string'"
       class="error">
       {{ input.error }}
     </div>
@@ -134,6 +148,12 @@
         type: String,
       },
     },
+    data () {
+      return {
+        focus: false,
+        symbolicType: this.type,
+      };
+    },
     computed: {
       component () {
         switch (this.type) {
@@ -164,7 +184,22 @@
       },
     },
     methods: {
+      changeType () {
+        switch (this.symbolicType) {
+          case 'password':
+            this.symbolicType = 'text';
+
+            break;
+
+          default:
+            this.symbolicType = 'password';
+
+            break;
+        }
+      },
       onBlur () {
+        this.focus = false;
+
         this.$emit('blur');
 
         this.input.validate();
@@ -178,6 +213,8 @@
         this.$emit('close');
       },
       onFocus () {
+        this.focus = true;
+
         this.$emit('focus');
       },
       onInput () {
@@ -185,6 +222,11 @@
       },
       onOpen () {
         this.$emit('open');
+      },
+    },
+    watch: {
+      type () {
+        this.symbolicType = this.type;
       },
     },
   };
@@ -199,28 +241,40 @@
       color: var(--maroon, maroon);
     }
 
-    .input {
+    .form-input {
+      display: flex;
+      align-items: center;
       width: 100%;
-      min-height: 3rem;
-      padding: .5rem 1rem;
-      background-color: var(--lightgrey, lightgrey);
       border-radius: .25rem;
       border: 2px solid var(--lightgrey, lightgrey);
-      color: var(--black, black);
-      font-family: var(--work-sans, sans-serif);
-      &:focus {
-        outline: none;
-        border: 2px solid var(--maroon, maroon);
-      }
+      background-color: var(--lightgrey, lightgrey);
 
-      &::placeholder {
-        color: var(--grey, grey);
+      .input {
+        width: 100%;
+        min-height: 3rem;
+        padding: .5rem 1rem;
+        background-color: transparent;
+        border: none;
+        color: var(--black, black);
         font-family: var(--work-sans, sans-serif);
+        &:focus {
+          outline: none;
+        }
+
+        &::placeholder {
+          color: var(--grey, grey);
+          font-family: var(--work-sans, sans-serif);
+        }
+      }
+    }
+    &.focus {
+      .form-input {
+        border-color: var(--maroon, maroon);
       }
     }
 
     &.invalid {
-      .input {
+      .form-input {
         border-color: var(--red, red);
       }
     }

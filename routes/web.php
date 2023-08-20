@@ -1,4 +1,5 @@
 <?php
+  use App\Http\Controllers\AuthController;
   use App\Http\Controllers\Controller;
   use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,13 @@
 
   Route::get('/properties/{slug}', [ Controller::class, 'index', ])
     ->name('property');
+
+// * AuthController - Controls the authentication.
+  Route::post('/sign-in', [ AuthController::class, 'in', ])
+    ->name('auth.in');
+
+  Route::middleware('auth')
+    ->group(function () {
+      Route::get('/sign-out', [ AuthController::class, 'out', ])
+        ->name('auth.out');
+    });
